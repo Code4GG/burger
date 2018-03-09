@@ -14,11 +14,11 @@ router.get('/index', function(req,res){
 
 router.post('api/burgers', function(req,res){
 	burgers.insertOne([
-		"name", "devoured"
+		"burger_name", "devoured"
 		], [
-		req.body.burger_name, req.body.devoured
+		req.body.burger_name, false
 		], function(res){
-			res.json({id: result.Id});
+			res.redirect('/index');
 	});
 });
 
@@ -35,6 +35,7 @@ router.put('api/burgers/:id', function(req,res){
 		} else{
 			res.status(200).end();
 		}
+		res.redirect('index');
 	});
 });
 
