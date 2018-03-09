@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const burgers = require("../models/burger.js");
 
-router.get('/', function(req,res){
+router.get('/index', function(req,res){
 	burgers.selectAll(function(data){
 		const obj = {
 			burgers: data
@@ -13,8 +13,12 @@ router.get('/', function(req,res){
 });
 
 router.post('api/burgers', function(req,res){
-	burgers.insertOne(name, [req.body.burger_name], function(result){
-		res.json({ id: insertId});
+	burgers.insertOne([
+		"name", "devoured"
+		], [
+		req.body.burger_name, req.body.devoured
+		], function(res){
+			res.json({id: result.Id});
 	});
 });
 
