@@ -25,6 +25,7 @@ function objToSql(ob) {
 }
 
 const orm = {
+	// select all from the database table
 	selectAll: function(tableInput, cb){
 		const queryString = `SELECT * FROM ${tableInput};`
 		connection.query(queryString, function(err,result){
@@ -34,6 +35,7 @@ const orm = {
 			cb(result);
 		});
 	},
+	// creates a new input into the database and converts a boolean value 
 	insertOne: function(table, cols, vals, cb){
 		const queryString = `INSERT INTO ${table} (${cols.toString()}) VALUES (${printQuestionMarks(vals.length)})`;
 		connection.query(queryString, vals, function(err, result){
@@ -43,6 +45,7 @@ const orm = {
 			cb(result);
 		});
 	},
+	// updates the database info and converts info into an object
 	updateOne: function(table, objColVals, condition, cb){
 		const queryString = `UPDATE ${table} SET ${objToSql(objColVals)} WHERE ${condition}`;
 		connection.query(queryString, function(err, result){

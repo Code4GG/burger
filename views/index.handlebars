@@ -23,9 +23,11 @@
 		<div class="col-md-5">
 			<ul>
 				<h3>Burgers To Eat!</h3>
+				{{!-- loops through burgers unless its already devoured --}}
 				{{#each burgers}}
 					{{#unless this.devoured}}
 						<li style="list-style-type:none;" class="list-group-item list-group-item-danger text-white">
+							{{!-- puts the burger into the devoured section on click --}}
 							<form action='api/burgers/{{this.id}}?_method=PUT' method='POST'>
 									<input type='hidden' name='devoured' value='true'>
 									<button type='submit' class="btn btn-danger float-right">EAT THIS!</button>
@@ -42,6 +44,7 @@
 		<div class="col-md-5">
 			<h3 class="text-muted ml-5">Burgers Eaten</h3>
 			<ul>
+				{{!-- if the burger is devoured display it --}}
 				{{#each burgers}}
 					{{#if this.devoured}}
 						<li style="list-style-type:none;">

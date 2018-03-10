@@ -1,5 +1,5 @@
 const orm = require("../config/orm.js");
-
+// puts the orm into a burger object to be exported to the routes to be interacted with between the database and index
 const burger = {
 	selectAll: function(cb){
 		orm.selectAll('burgers', function(res){
