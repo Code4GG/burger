@@ -1,41 +1,36 @@
 const express = require("express");
 const router = express.Router();
-const burgers = require("../models/burger.js");
+const burger = require("../models/burger.js");
 
+//redirects to index on start
+router.get('/', function(req,res){
+	res.redirect('/index');
+})
+//displays all the burger data from the database
 router.get('/index', function(req,res){
-	burgers.selectAll(function(data){
-		const obj = {
+	burger.selectAll(function(data){
+		const hbsObject = {
 			burgers: data
 		};
-		console.log(obj);
-		res.render('index',obj);
+		console.log(hbsObject);
+		res.render('index', hbsObject);
+	});
+});
+//adds new burgers to the database/view
+router.post('/api/burgers', function(req, res) {
+	burger.insertOne(['burger_name', 'devoured'], [req.body.name, false], function() {
+		res.redirect('/index');
 	});
 });
 
-router.post('api/burgers', function(req,res){
-	burgers.insertOne([
-		"burger_name", "devoured"
-		], [
-		req.body.burger_name, false
-		], function(res){
-			res.redirect('/index');
+//changes the burger after its devoured
+router.put('/api/burgers/:id', function(req, res) {
+	var condition = 'id = ' + req.params.id;
+	console.log('condition', condition);
+
+	burger.updateOne({devoured: req.body.devoured}, condition, function() {
+		res.redirect('/index');
 	});
 });
 
-router.put('api/burgers/:id', function(req,res){
-	const condition = "id = " + req.params.id;
-
-	console.log(condition);
-
-	burgers.updateOne({
-		devoured: req.body.devoured
-	}, condition, function(result){
-		if (result.changedRows === 0){
-			return res.status(404).end();
-		} else{
-			res.status(200).end();
-		}
-		res.redirect('index');
-	});
-});
-
+module.exports = router;

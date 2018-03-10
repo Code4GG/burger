@@ -9,15 +9,13 @@ const app = express();
 var PORT = process.env.PORT || 3000;
 
 // express middleware needed for serving static files. For more details
-// see here: http://expressjs.com/en/starter/static-files.html
-app.use(express.static(__dirname + '/public'));
+app.use(express.static("public"));
 
-/// bodyparsers 
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// parse application/json
 app.use(bodyParser.json());
-app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
-app.use(bodyParser.text({ type: 'text/html' }));
 
 // override with POST having ?_method=DELETE or PUT
 app.use(method('_method'));
@@ -25,8 +23,10 @@ app.use(method('_method'));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-const routes = require("../controllers/burgers_controller.js");
-app.use('/', routes);
+const routes = require("./controllers/burgers_controller.js");
+app.use(routes);
+// app.use(app.router);
+// routes.initialize(app);
 
 // Initiate the listener.
 app.listen(PORT, function() {

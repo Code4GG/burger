@@ -26,7 +26,7 @@ function objToSql(ob) {
 
 const orm = {
 	selectAll: function(tableInput, cb){
-		const queryString = `SELECT * FROM ${tableInput;};`
+		const queryString = `SELECT * FROM ${tableInput};`
 		connection.query(queryString, function(err,result){
 			if (err){
 				throw err;
@@ -35,7 +35,7 @@ const orm = {
 		});
 	},
 	insertOne: function(table, cols, vals, cb){
-		const queryString = `INSERT INTO ${table} (${cols.toString();}) VALUES ${printQuestionMarks(vals.length);}`;
+		const queryString = `INSERT INTO ${table} (${cols.toString()}) VALUES (${printQuestionMarks(vals.length)})`;
 		connection.query(queryString, vals, function(err, result){
 			if (err){
 				throw err;
@@ -44,7 +44,7 @@ const orm = {
 		});
 	},
 	updateOne: function(table, objColVals, condition, cb){
-		const queryString = `UPDATE ${table} SET ${objToSql(objColVals);} WHERE ${condition}`;
+		const queryString = `UPDATE ${table} SET ${objToSql(objColVals)} WHERE ${condition}`;
 		connection.query(queryString, function(err, result){
 			if (err){
 				throw err;
